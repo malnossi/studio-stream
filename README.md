@@ -47,14 +47,18 @@ Building for Windows is fully supported natively on macOS via Cross-Compilation 
 
 ### Linux
 
-Building for Linux creates a portable AppImage.
+Building for Linux compiles a standalone binary.
 
-1. Ensure you have your Linux build tools installed.
+1. Ensure you have your mandatory Linux system dependencies and build tools installed. On Debian/Ubuntu-based systems, you can install them via:
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y build-essential pkg-config libasound2-dev curl tar wget
+   ```
 2. Build the application:
    ```bash
    make build-linux
    ```
-   This command compiles the Linux binary using CGO, downloads the `appimagetool`, and generates a standalone `StudioStream-x86_64.AppImage` in `target/bin/`.
+   This command automatically downloads and compiles the static C dependencies (PortAudio, LAME, FDK-AAC, Opus, Ogg, Vorbis), and compiles the Linux binary using CGO, placing the standalone `StudioStream-linux` binary in `target/bin/`.
 
 ## Contributing
 

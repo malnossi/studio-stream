@@ -13,6 +13,13 @@ if [ -f "${DEPS_DIST}/lib/libmp3lame.a" ] && [ -f "${DEPS_DIST}/lib/libportaudio
 fi
 
 echo "--- Building Static Dependencies for Linux ---"
+
+# Check for required system packages
+if command -v apt-get >/dev/null; then
+    echo "Tip: Ensure you have the required build tools installed:"
+    echo "sudo apt-get install -y build-essential pkg-config libasound2-dev curl tar wget"
+fi
+
 mkdir -p "${DEPS_DIST}"
 
 # ---------- LAME ----------

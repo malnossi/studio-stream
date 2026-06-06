@@ -17,10 +17,15 @@ ifeq ($(UNAME_S),Darwin)
 	# Set macOS deployment target dynamically to match the local OS version
 	MACOSX_DEPLOYMENT_TARGET ?= $(shell sw_vers -productVersion | cut -d. -f1-2)
 	export MACOSX_DEPLOYMENT_TARGET
+else ifeq ($(UNAME_S),Linux)
+	# Linux Static Linking Configuration
+	CGO_CFLAGS  ?= -I$(DEPS_DIST_LINUX)/include -I$(DEPS_DIST_LINUX)/include/fdk-aac -I$(DEPS_DIST_LINUX)/include/opus
+	CGO_LDFLAGS ?= -L$(DEPS_DIST_LINUX)/lib -lportaudio -lmp3lame -lfdk-aac -lopusfile -lopus -lvorbisenc -lvorbis -logg -lasound -lpthread -lm -lrt -lstdc++ -Wl,-w
+	PKG_CONFIG_PATH ?= $(DEPS_DIST_LINUX)/lib/pkgconfig
 else
-	# Fallback/Linux/Windows dynamic/static mixing (can be extended)
-	CGO_CFLAGS  ?= -I/opt/homebrew/include -I/opt/homebrew/include/fdk-aac -I/opt/homebrew/include/opus
-	CGO_LDFLAGS ?= -L/opt/homebrew/lib -lportaudio -lmp3lame -lfdk-aac -lopus -logg -lvorbis -lvorbisenc -Wl,-w
+	# Fallback/Windows dynamic/static mixing (can be extended)
+	CGO_CFLAGS  ?= -I/opt/homebrew/include
+	CGO_LDFLAGS ?= -L/opt/homebrew/lib -Wl,-w
 endif
 
 # Export CGO variables to all child processes spawned by make targets
@@ -75,31 +80,18 @@ build-windows: deps-windows
 	@echo "Done! Windows executable located at target/bin/StudioStream.exe"
 
 # ==========================================
-# Linux Packaging (AppImage)
+# Linux Packaging (Binary Only)
 # ==========================================
-build-linux:
+deps-linux:
+	@echo "Building static C dependencies for Linux..."
+	@cd $(WORKSPACE_DIR)/scripts && chmod +x build_deps_linux.sh && ./build_deps_linux.sh
+
+build-linux: deps-linux
 	@echo "Building StudioStream for Linux..."
-	@mkdir -p build/AppDir/usr/bin
-	@mkdir -p build/AppDir/usr/share/applications
-	@mkdir -p build/AppDir/usr/share/icons/hicolor/256x256/apps
-	
+	@mkdir -p $(TARGET_DIR)/bin
 	@echo "Compiling Linux binary..."
-	CGO_ENABLED=1 go build -o build/AppDir/usr/bin/studiostream main.go
-	
-	@echo "Copying AppImage resources..."
-	cp packaging/appimage/studiostream.desktop build/AppDir/studiostream.desktop
-	cp target/darwin/appicon.iconset/icon_256x256.png build/AppDir/studiostream.png
-	cp packaging/appimage/studiostream.desktop build/AppDir/usr/share/applications/
-	cp target/darwin/appicon.iconset/icon_256x256.png build/AppDir/usr/share/icons/hicolor/256x256/apps/studiostream.png
-	
-	@echo "Generating AppImage..."
-	@if [ ! -f packaging/appimage/appimagetool-x86_64.AppImage ]; then \
-		echo "Downloading appimagetool..."; \
-		wget -qO packaging/appimage/appimagetool-x86_64.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage; \
-	fi
-	chmod +x packaging/appimage/appimagetool-x86_64.AppImage
-	./packaging/appimage/appimagetool-x86_64.AppImage build/AppDir target/bin/StudioStream-x86_64.AppImage
-	@echo "Done! Linux AppImage located at target/bin/StudioStream-x86_64.AppImage"
+	CGO_ENABLED=1 go build -ldflags="-s -w" -o $(TARGET_DIR)/bin/StudioStream-linux main.go
+	@echo "Done! Linux binary located at $(TARGET_DIR)/bin/StudioStream-linux"
 
 clean:
 	@echo "Cleaning up..."
