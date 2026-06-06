@@ -96,7 +96,12 @@ func NewRecorder(deviceIndex int, streamChannels int, sampleRate int, framesPerB
 
 	stream, err := portaudio.OpenStream(params, r.inputBuf)
 	if err != nil {
-		return nil, err
+		log.Printf("Failed to open specific device with requested parameters (%v). Falling back to default audio device...", err)
+		// Fallback to the default system audio device which typically handles automatic resampling
+		stream, err = portaudio.OpenDefaultStream(inputChannels, 0, float64(sampleRate), framesPerBuffer, r.inputBuf)
+		if err != nil {
+			return nil, fmt.Errorf("failed to open default stream as fallback: %w", err)
+		}
 	}
 	r.stream = stream
 	return r, nil

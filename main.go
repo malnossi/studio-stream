@@ -436,7 +436,7 @@ func main() {
 				nameEdit = !nameEdit
 			}
 
-			y += 35
+			y += 90 // Shift down more to leave room for Input Device at y=140
 			raygui.Label(rl.NewRectangle(15, y, 40, 25), "Host")
 			if raygui.TextBox(rl.NewRectangle(15, y+20, 140, 25), &host, 64, hostEdit) {
 				hostEdit = !hostEdit
@@ -453,7 +453,7 @@ func main() {
 				mountEdit = !mountEdit
 			}
 
-			y += 50
+			y += 45
 			raygui.Label(rl.NewRectangle(15, y, 60, 25), "Username")
 			if raygui.TextBox(rl.NewRectangle(15, y+20, 205, 25), &username, 64, userEdit) {
 				userEdit = !userEdit
@@ -463,19 +463,19 @@ func main() {
 				passEdit = !passEdit
 			}
 
-			y += 50
+			y += 45
 			raygui.Label(rl.NewRectangle(15, y, 100, 25), "Stream Name")
 			if raygui.TextBox(rl.NewRectangle(15, y+20, 430, 25), &streamName, 64, sNameEdit) {
 				sNameEdit = !sNameEdit
 			}
 
-			y += 50
+			y += 45
 			raygui.Label(rl.NewRectangle(15, y, 100, 25), "Description")
 			if raygui.TextBox(rl.NewRectangle(15, y+20, 430, 25), &description, 64, descEdit) {
 				descEdit = !descEdit
 			}
 
-			y += 50
+			y += 45
 			raygui.Label(rl.NewRectangle(15, y, 100, 25), "Genre")
 			if raygui.TextBox(rl.NewRectangle(15, y+20, 430, 25), &genre, 64, genreEdit) {
 				genreEdit = !genreEdit
@@ -486,11 +486,11 @@ func main() {
 			}
 
 			// DROPDOWNS for Audio config (drawn bottom to top)
-			yDropRow := float32(400)
+			yDropRow := float32(450)
 			colW := float32(100)
 			gap := float32(10)
 
-			yDev := yDropRow + 50
+			yDev := float32(150)
 			if dropdownActive && !deviceEditMode {
 				raygui.Lock()
 			} else {
