@@ -1,0 +1,33 @@
+{
+  "RT_GROUP_ICON": {
+    "APPICON": {
+      "0000": [
+        "./appicon.png"
+      ]
+    }
+  },
+  "RT_MANIFEST": {
+    "APP.MANIFEST": {
+      "0409": {
+        "identity": {
+          "name": "com.studiostream.app",
+          "version": "1.0.0.0"
+        },
+        "description": "StudioStream Broadcaster",
+        "minimum-os": "win7",
+        "execution-level": "as invoker",
+        "ui-access": false,
+        "auto-elevate": false,
+        "dpi-awareness": "system",
+        "disable-window-filtering": false,
+        "high-resolution-scrolling-aware": true,
+        "ultra-high-resolution-scrolling-aware": true,
+        "long-paths-aware": true,
+        "printer-driver-isolation": true,
+        "gdi-scaling": false,
+        "segment-heap": false,
+        "use-common-controls-v6": true
+      }
+    }
+  }
+}

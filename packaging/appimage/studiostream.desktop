@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=StudioStream
+Comment=Live Audio Broadcast Engine
+Exec=studiostream
+Icon=studiostream
+Type=Application
+Categories=AudioVideo;Audio;
+Terminal=false
+StartupNotify=true
+StartupWMClass=studiostream
