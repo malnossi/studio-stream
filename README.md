@@ -2,9 +2,7 @@
 
 **StudioStream** is a powerful, standalone live audio broadcasting engine for Icecast, built entirely with Go, [Raylib](https://www.raylib.com/), and [Raygui](https://github.com/raysan5/raygui).
 
-## What is StudioStream?
-
-StudioStream acts as a reliable, seamless medium connecting your audio source directly to your listeners across the globe. By completely dropping heavy web-based frameworks like Wails or Vue 3, StudioStream achieves an incredibly lightweight, ultra-performant, and visually stunning native desktop experience.
+![Image](/docs/studiostream.gif)
 
 ## Features
 
